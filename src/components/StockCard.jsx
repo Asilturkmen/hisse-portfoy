@@ -73,7 +73,7 @@ function StockCard({ symbol, name, quantity, price, onDelete, onEdit }) {
                     <span className="font-medium">{quantity}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="text-secondary-400 text-sm">Alış Fiyatı:</span>
+                    <span className="text-secondary-400 text-sm">Ortalama Alış Fiyatı:</span>
                     <span className="font-medium">₺{price.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between items-center">

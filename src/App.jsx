@@ -10,7 +10,11 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#14B8A6', '#F97316'];
 
 function App() {
-  const [stocks, setStocks] = useState([]);
+  const [stocks, setStocks] = useState(() => {
+    const saved = localStorage.getItem("stocks");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [editingStock, setEditingStock] = useState(null);
   const [portfolioHistory, setPortfolioHistory] = useState([]);
 
@@ -21,6 +25,10 @@ function App() {
       date: new Date().toISOString(),
       value: totalValue
     }]);
+  }, [stocks]);
+
+  useEffect(() => {
+    localStorage.setItem("stocks", JSON.stringify(stocks));
   }, [stocks]);
 
   const handleAddStock = (newStock) => {

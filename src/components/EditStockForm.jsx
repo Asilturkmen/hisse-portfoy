@@ -45,7 +45,7 @@ function EditStockForm({ stock, onSave, onCancel }) {
             
             <div>
               <label className="block text-sm font-medium text-secondary-400 mb-1">
-                Alış Fiyatı
+                Ortalama Alış Fiyatı
               </label>
               <input
                 type="number"
