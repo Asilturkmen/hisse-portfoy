@@ -144,10 +144,11 @@ function App() {
                     cx="50%"
                     cy="50%"
                     labelLine
-                    outerRadius={150}
+                    outerRadius={window.innerWidth < 768 ? 100 : 150}
                     fill="#8884d8"
                     dataKey="value"
                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    labelStyle={{ fontSize: window.innerWidth < 768 ? '10px' : '12px' }}
                   >
                     {pieData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
