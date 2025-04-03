@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { s } from "framer-motion/client";
 
 function StockCard({ symbol, name, quantity, price, onDelete, onEdit }) {
     const totalValue = quantity * price;
