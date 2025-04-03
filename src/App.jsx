@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AddStockForm from './components/AddStockForm';
 import StockCard from './components/StockCard';
 import EditStockForm from './components/EditStockForm';
@@ -17,6 +17,9 @@ function App() {
 
   const [editingStock, setEditingStock] = useState(null);
   const [portfolioHistory, setPortfolioHistory] = useState([]);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const installPromptShown = useRef(false);
 
   // Portföy geçmişini kaydet
   useEffect(() => {
@@ -30,6 +33,22 @@ function App() {
   useEffect(() => {
     localStorage.setItem("stocks", JSON.stringify(stocks));
   }, [stocks]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      if (!installPromptShown.current) {
+        setDeferredPrompt(e);
+        setShowInstallPrompt(true);
+        installPromptShown.current = true;
+      }
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+    };
+  }, []);
 
   const handleAddStock = (newStock) => {
     setStocks((prevStocks) => {
@@ -196,6 +215,23 @@ function App() {
             onSave={handleSaveEdit}
             onCancel={handleCancelEdit}
           />
+        )}
+
+        {showInstallPrompt && (
+          <button
+            onClick={() => {
+              if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => {
+                  setDeferredPrompt(null);
+                  setShowInstallPrompt(false);
+                });
+              }
+            }}
+            className="fixed bottom-5 right-5 bg-primary-500 text-white px-4 py-2 rounded shadow-lg z-50"
+          >
+            📲 Uygulamayı Yükle
+          </button>
         )}
       </div>
     </div>
